@@ -14,13 +14,17 @@ var packageDefinition = protoLoader.loadSync(
 var service_proto = grpc.loadPackageDefinition(packageDefinition).service;
 
 function main() {
-    var target = 'localhost:50051';
-    var user = 'Alvaro';
-    var email = 'alvaro@gmail.com'
+    const target = 'localhost:50051';
 
     var client = new service_proto.YourService(target, grpc.credentials.createInsecure());
 
-    client.addUser({ id: 1, name: user, email: email }, function (err, response) {
+    var addUserRequest = {
+        id: 1,
+        name: "Alvaro",
+        email: "alvaro@gmail.com"
+    };
+
+    client.addUser(addUserRequest, function (err, response) {
         console.log('User added:', response.result);
     });
 
@@ -28,8 +32,14 @@ function main() {
         console.log('User:', response);
     });
 
+    var operationRequestSum = {
+        num1: 10,
+        num2: 2,
+        operation: 'sum'
+    };
+
     // Suma
-    client.operation({ num1: 1, num2: 2, operation: 'sum' }, function (err, response) {
+    client.operation(operationRequestSum, function (err, response) {
         console.log('Suma:', response.result);
     });
 
